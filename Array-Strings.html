@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>stacknotes — Python: Arrays & Strings</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">stack<span>notes</span></a>
+    <span class="badge">Python — Arrays & Strings</span>
+  </div>
+</header>
+
+<div class="container">
+  <div class="hero">
+    <div class="hero-tag">// Python DSA — Module 01</div>
+    <h1>Arrays & Strings<br><em>Problem Patterns</em></h1>
+    <p class="hero-desc">Core data structure patterns for Python developers. Each section covers key concepts followed by scenario-based problems — no solutions, only the direction to think in.</p>
+  </div>
+
+  <div class="toc">
+    <div class="toc-label">// Topics covered</div>
+    <div class="toc-grid">
+      <a href="#lists"       class="toc-item"><span class="toc-num">01</span><span class="toc-name">Lists</span></a>
+      <a href="#strings"     class="toc-item"><span class="toc-num">02</span><span class="toc-name">Strings</span></a>
+      <a href="#dicts"       class="toc-item"><span class="toc-num">03</span><span class="toc-name">Dicts & Sets</span></a>
+      <a href="#collections" class="toc-item"><span class="toc-num">04</span><span class="toc-name">Collections</span></a>
+      <a href="#builtins"    class="toc-item"><span class="toc-num">05</span><span class="toc-name">Built-ins</span></a>
+    </div>
+  </div>
+
+  <div class="main-content">
+
+    <!-- SECTION 1: LISTS -->
+    <div class="section" id="lists">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <h2>Lists (Array Equivalent)</h2>
+      </div>
+
+      <div class="concepts">
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>Slicing & indexing:</strong> <code>arr[i]</code>, <code>arr[-1]</code>, <code>arr[start:end:step]</code> — negative indices count from end. Slicing creates a new list.</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>List comprehension:</strong> <code>[expr for x in iterable if condition]</code> — cleaner and faster than manual loops in most cases.</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>sort() vs sorted():</strong> <code>sort()</code> modifies in-place, returns None. <code>sorted()</code> returns a new list. Both accept <code>key=</code> and <code>reverse=</code>.</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>Two Pointer:</strong> Two indices (usually left=0, right=len-1) moving toward each other or in same direction. Avoids nested loops — O(n) instead of O(n²).</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>Sliding Window:</strong> Fixed or variable-size window moving across the array. Track window state as you expand/shrink rather than recalculating each time.</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>Prefix Sum:</strong> Build a running total array. Allows O(1) range sum queries instead of O(n) each time.</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>Kadane's Algorithm:</strong> Max subarray sum in O(n). At each index, decide: extend current subarray or start fresh from current element.</div></div>
+      </div>
+
+      <div class="problems-label">// Practice Problems</div>
+
+      <div class="problem-card" onclick="toggle(this)">
+        <div class="problem-header">
+          <div>
+            <div class="problem-meta"><span class="problem-num">P-01</span><span class="diff-badge easy">Easy</span></div>
+            <div class="problem-title">You're building a feature for a food delivery app. Users can filter restaurants by rating. Given a list of restaurant ratings and a minimum rating threshold, return a new list with only the qualifying restaurants' ratings, sorted highest to lowest.</div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="problem-body">
+          <div class="problem-statement">
+            <p><strong>Input:</strong> <code>ratings = [4.2, 3.8, 4.7, 2.9, 4.5, 3.1]</code>, <code>min_rating = 4.0</code></p>
+            <p><strong>Output:</strong> <code>[4.7, 4.5, 4.2]</code></p>
+            <p>Do not modify the original list. The output should be a new list.</p>
+          </div>
+          <div class="constraints">Constraints: 1 ≤ len(ratings) ≤ 10⁴ | 0.0 ≤ rating ≤ 5.0 | 0.0 ≤ min_rating ≤ 5.0</div>
+          <div class="approach-section">
+            <div class="approach-label">→ Approach hint</div>
+            <div class="approach-text">Think about what Python tool lets you filter an iterable based on a condition in one line. Then apply sorting with a direction. <strong>Key question:</strong> what does <code>sorted()</code> return vs <code>.sort()</code>? Which one preserves the original?</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="problem-card" onclick="toggle(this)">
+        <div class="problem-header">
+          <div>
+            <div class="problem-meta"><span class="problem-num">P-02</span><span class="diff-badge medium">Medium</span></div>
+            <div class="problem-title">A stock trading platform wants to find the maximum profit possible from a single buy-sell transaction. Given daily prices for a stock over N days, find the maximum profit. You must buy before you sell.</div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="problem-body">
+          <div class="problem-statement">
+            <p><strong>Input:</strong> <code>prices = [120, 80, 100, 95, 140, 60, 150]</code></p>
+            <p><strong>Output:</strong> <code>90</code> (buy at 60, sell at 150)</p>
+            <p>If no profit is possible, return 0. You cannot sell before buying.</p>
+          </div>
+          <div class="constraints">Constraints: 1 ≤ len(prices) ≤ 10⁵ | 1 ≤ prices[i] ≤ 10⁴</div>
+          <div class="approach-section">
+            <div class="approach-label">→ Approach hint</div>
+            <div class="approach-text">Brute force is O(n²) — check every pair. Can you do better? Think about what you need to track as you move left to right: <strong>the minimum price seen so far</strong>. At each step, what's the profit if you sell today? <strong>Key insight:</strong> you don't need to look back if you already know the cheapest buy price up to this point.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="problem-card" onclick="toggle(this)">
+        <div class="problem-header">
+          <div>
+            <div class="problem-meta"><span class="problem-num">P-03</span><span class="diff-badge medium">Medium</span></div>
+            <div class="problem-title">A logistics company tracks daily delivery counts. They want to know the maximum total deliveries achievable in any 7-consecutive-day window across a 30-day period, to identify their peak week.</div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="problem-body">
+          <div class="problem-statement">
+            <p><strong>Input:</strong> <code>deliveries = [12, 8, 15, 20, 7, 18, 25, 10, 14, 19, ...]</code> (30 values)</p>
+            <p><strong>Output:</strong> Maximum sum of any 7 consecutive days</p>
+            <p>The window must be exactly 7 days wide. Return the maximum sum found.</p>
+          </div>
+          <div class="constraints">Constraints: len(deliveries) = 30 | 0 ≤ deliveries[i] ≤ 1000</div>
+          <div class="approach-section">
+            <div class="approach-label">→ Approach hint</div>
+            <div class="approach-text">If you recalculate the sum from scratch for every window, that's O(n*k). <strong>Sliding window idea:</strong> when you move one step forward, what changes in your sum? You lose the leftmost element and gain a new rightmost element. Can you update the sum in O(1) instead of recalculating? Start with the first window's sum, then slide.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-label">// Interview tip — Lists</div>
+        <div class="tip-text">When asked to find pairs, triplets, or subarrays — your first instinct should be <strong>can two pointers solve this?</strong> Sorting first often unlocks two-pointer solutions. Also: interviewers notice when you use <code>sorted(arr, key=lambda x: x[1])</code> cleanly — it shows Python fluency, not just algorithm knowledge.</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- SECTION 2: STRINGS -->
+    <div class="section" id="strings">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <h2>Strings</h2>
+      </div>
+
+      <div class="concepts">
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>Immutability:</strong> Strings cannot be changed in place. <code>s[0] = 'x'</code> throws an error. Concatenation creates a new string. Use <code>list(s)</code> → modify → <code>''.join()</code> for in-place-style operations.</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>Common methods:</strong> <code>split()</code>, <code>join()</code>, <code>strip()</code>, <code>replace()</code>, <code>startswith()</code>, <code>endswith()</code>, <code>lower()</code>, <code>upper()</code> — all return new strings.</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>ord() & chr():</strong> <code>ord('a')</code> → 97. <code>chr(97)</code> → 'a'. Used when you need to work with character positions in the alphabet — e.g., <code>ord(c) - ord('a')</code> gives 0-based index.</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>Slicing & reversal:</strong> <code>s[::-1]</code> reverses a string. <code>s[i:j]</code> gives substring from i to j-1. Strings support all sequence operations.</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>Palindrome check:</strong> <code>s == s[::-1]</code> is the Pythonic way. For two-pointer: compare characters from both ends moving inward.</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>Anagram check:</strong> Two strings are anagrams if they have the same character frequencies. <code>sorted(s1) == sorted(s2)</code> works but O(n log n). Better: use <code>Counter</code>.</div></div>
+      </div>
+
+      <div class="problems-label">// Practice Problems</div>
+
+      <div class="problem-card" onclick="toggle(this)">
+        <div class="problem-header">
+          <div>
+            <div class="problem-meta"><span class="problem-num">P-04</span><span class="diff-badge easy">Easy</span></div>
+            <div class="problem-title">A username validation system needs to check if any username is a "mirror" — meaning it reads the same forwards and backwards, ignoring spaces and case. Given a username string, determine if it qualifies.</div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="problem-body">
+          <div class="problem-statement">
+            <p><strong>Input:</strong> <code>"Race Car"</code></p>
+            <p><strong>Output:</strong> <code>True</code></p>
+            <p>Ignore spaces and case. Only consider alphanumeric characters. <code>"A man a plan a canal Panama"</code> → <code>True</code>.</p>
+          </div>
+          <div class="constraints">Constraints: 1 ≤ len(s) ≤ 10⁵ | May contain spaces, punctuation, mixed case</div>
+          <div class="approach-section">
+            <div class="approach-label">→ Approach hint</div>
+            <div class="approach-text">Before checking, clean the string. <strong>Think in steps:</strong> (1) remove everything that isn't alphanumeric — what Python string method or list comprehension helps here? (2) normalize case. (3) check palindrome. <strong>Bonus:</strong> can you do this in one clean line using slicing?</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="problem-card" onclick="toggle(this)">
+        <div class="problem-header">
+          <div>
+            <div class="problem-meta"><span class="problem-num">P-05</span><span class="diff-badge medium">Medium</span></div>
+            <div class="problem-title">A plagiarism detection tool checks if two submitted essays are anagrams — same characters used, different order. Given two strings (lowercased, no punctuation), determine if one is a rearrangement of the other.</div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="problem-body">
+          <div class="problem-statement">
+            <p><strong>Input:</strong> <code>s1 = "listen"</code>, <code>s2 = "silent"</code></p>
+            <p><strong>Output:</strong> <code>True</code></p>
+            <p><code>s1 = "hello"</code>, <code>s2 = "world"</code> → <code>False</code>. Only lowercase a-z, no spaces.</p>
+          </div>
+          <div class="constraints">Constraints: 1 ≤ len(s1), len(s2) ≤ 5×10⁴ | Only lowercase a-z</div>
+          <div class="approach-section">
+            <div class="approach-label">→ Approach hint</div>
+            <div class="approach-text"><strong>Three approaches — think about the tradeoff:</strong> (1) Sort both and compare — O(n log n). (2) Frequency dict manually — O(n). (3) Counter — cleanest, O(n). <strong>First check:</strong> if lengths differ, what's the answer immediately?</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="problem-card" onclick="toggle(this)">
+        <div class="problem-header">
+          <div>
+            <div class="problem-meta"><span class="problem-num">P-06</span><span class="diff-badge hard">Hard</span></div>
+            <div class="problem-title">A search engine needs to find the shortest substring in a document that contains all required keywords. Given a large document string and a list of keywords, find the minimum length substring containing all keywords at least once.</div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="problem-body">
+          <div class="problem-statement">
+            <p><strong>Input:</strong> <code>s = "ADOBECODEBANC"</code>, <code>keywords = ["A", "B", "C"]</code></p>
+            <p><strong>Output:</strong> <code>"BANC"</code></p>
+            <p>If no valid substring exists, return an empty string.</p>
+          </div>
+          <div class="constraints">Constraints: 1 ≤ len(s) ≤ 10⁵ | 1 ≤ len(keywords) ≤ 100</div>
+          <div class="approach-section">
+            <div class="approach-label">→ Approach hint</div>
+            <div class="approach-text">Variable sliding window. Expand right until all keywords are covered. Then shrink from the left while still covering all keywords — that's your candidate. Record minimum and repeat. <strong>Key question:</strong> what data structure tracks how many of each keyword you currently have vs how many you need?</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-label">// Interview tip — Strings</div>
+        <div class="tip-text">Always clarify: <strong>ASCII or Unicode? Case-sensitive? Special characters?</strong> Never concatenate strings in a loop — use a list and <code>''.join(list)</code> at the end. String concatenation in a loop is O(n²) due to immutability.</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- SECTION 3: DICTS & SETS -->
+    <div class="section" id="dicts">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <h2>Dictionaries & Sets</h2>
+      </div>
+
+      <div class="concepts">
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>Core dict ops:</strong> <code>.get(key, default)</code> avoids KeyError. <code>.items()</code> for key-value pairs. <code>.setdefault(key, [])</code> initializes if missing. Dict lookup is O(1) average.</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>Frequency counting:</strong> The most common dict pattern — count occurrences of elements. Used in anagram, most frequent element, and character problems constantly.</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>Set for O(1) lookup:</strong> <code>set()</code> gives O(1) membership check. Operations: <code>&</code> (intersection), <code>|</code> (union), <code>-</code> (difference).</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>Dict as cache/memo:</strong> Store computed results to avoid recomputation. Key pattern for dynamic programming and avoiding repeated work.</div></div>
+      </div>
+
+      <div class="problems-label">// Practice Problems</div>
+
+      <div class="problem-card" onclick="toggle(this)">
+        <div class="problem-header">
+          <div>
+            <div class="problem-meta"><span class="problem-num">P-07</span><span class="diff-badge easy">Easy</span></div>
+            <div class="problem-title">An e-commerce platform logs every product viewed by a user. Given a list of product prices and a target budget code, find the two products that together sum to the target. Return their indices.</div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="problem-body">
+          <div class="problem-statement">
+            <p><strong>Input:</strong> <code>products = [200, 450, 300, 150, 500]</code>, <code>target = 600</code></p>
+            <p><strong>Output:</strong> <code>[0, 2]</code> (200 + 300 = 600)</p>
+            <p>Exactly one valid pair exists. You may not use the same element twice.</p>
+          </div>
+          <div class="constraints">Constraints: 2 ≤ len(products) ≤ 10⁴ | Values and target are positive integers</div>
+          <div class="approach-section">
+            <div class="approach-label">→ Approach hint</div>
+            <div class="approach-text">Brute force: every pair — O(n²). <strong>One-pass approach:</strong> at each element you know what you need (target - current). If you could check in O(1) whether that value exists and where — what data structure gives you that as you iterate?</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="problem-card" onclick="toggle(this)">
+        <div class="problem-header">
+          <div>
+            <div class="problem-meta"><span class="problem-num">P-08</span><span class="diff-badge medium">Medium</span></div>
+            <div class="problem-title">A content moderation system processes a stream of words from user comments. After processing, return the top 3 most frequently used words, excluding a given set of stopwords like "the", "a", "is".</div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="problem-body">
+          <div class="problem-statement">
+            <p><strong>Input:</strong> <code>words = ["the", "sky", "is", "blue", "the", "sky", "is", "clear", "sky"]</code>, <code>stopwords = {"the", "is"}</code></p>
+            <p><strong>Output:</strong> <code>["sky", "blue", "clear"]</code></p>
+            <p>Sort by frequency descending, then alphabetically for ties.</p>
+          </div>
+          <div class="constraints">Constraints: 1 ≤ len(words) ≤ 5×10⁴ | All lowercase | k = 3</div>
+          <div class="approach-section">
+            <div class="approach-label">→ Approach hint</div>
+            <div class="approach-text"><strong>Step 1:</strong> Filter stopwords — stopwords is a set, membership check O(1). <strong>Step 2:</strong> Count frequencies — which collections tool is built exactly for this? <strong>Step 3:</strong> Get top-k — that tool has a direct method. <strong>Tricky:</strong> same frequency ties — how do you sort by frequency descending AND alphabetically ascending simultaneously?</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="problem-card" onclick="toggle(this)">
+        <div class="problem-header">
+          <div>
+            <div class="problem-meta"><span class="problem-num">P-09</span><span class="diff-badge medium">Medium</span></div>
+            <div class="problem-title">A social network finds mutual connections between users. Given two users' friend lists (with possible duplicates from import errors), return the unique common friends, and friends unique to each user.</div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="problem-body">
+          <div class="problem-statement">
+            <p><strong>Input:</strong> <code>user_a = [101, 204, 305, 101, 406]</code>, <code>user_b = [204, 305, 507, 204]</code></p>
+            <p><strong>Output:</strong> <code>{"mutual": [204, 305], "only_a": [101, 406], "only_b": [507]}</code></p>
+            <p>Handle duplicate IDs. Output lists can be in any order.</p>
+          </div>
+          <div class="constraints">Constraints: 0 ≤ len(list) ≤ 10⁴ | User IDs are positive integers</div>
+          <div class="approach-section">
+            <div class="approach-label">→ Approach hint</div>
+            <div class="approach-text">Convert both lists to sets — duplicates disappear automatically. Then set operations: mutual = <code>&</code>, only_a = <code>-</code>, only_b = reverse <code>-</code>. <strong>Think further:</strong> if the problem required preserving original order, could you still use sets?</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-label">// Interview tip — Dicts & Sets</div>
+        <div class="tip-text">Trigger words: <strong>"count / frequency / occurrence"</strong> → dict or Counter. <strong>"unique / duplicate / seen before / exists"</strong> → set. These two pattern triggers solve roughly 40% of easy/medium problems.</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- SECTION 4: COLLECTIONS -->
+    <div class="section" id="collections">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <h2>Collections Module</h2>
+      </div>
+
+      <div class="concepts">
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>Counter:</strong> <code>Counter(list)</code> counts frequencies. <code>.most_common(k)</code> returns top-k. Supports arithmetic: <code>c1 + c2</code>, <code>c1 - c2</code>.</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>defaultdict:</strong> Auto-initializes missing keys — <code>defaultdict(list)</code>, <code>defaultdict(int)</code>, <code>defaultdict(set)</code>. Eliminates <code>if key not in d</code> boilerplate.</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>deque:</strong> O(1) append/pop from both ends. Unlike list where <code>pop(0)</code> is O(n). Use for sliding window, BFS queues, fixed-size buffers. <code>deque(maxlen=k)</code> auto-evicts oldest.</div></div>
+      </div>
+
+      <div class="problems-label">// Practice Problems</div>
+
+      <div class="problem-card" onclick="toggle(this)">
+        <div class="problem-header">
+          <div>
+            <div class="problem-meta"><span class="problem-num">P-10</span><span class="diff-badge easy">Easy</span></div>
+            <div class="problem-title">A news app tracks which articles each user reads. Given a flat log of (user_id, article_id) pairs, group all article IDs read by each user. Return a dict where each key is a user and value is their list of articles.</div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="problem-body">
+          <div class="problem-statement">
+            <p><strong>Input:</strong> <code>logs = [(1, "a1"), (2, "a3"), (1, "a2"), (3, "a1"), (2, "a1")]</code></p>
+            <p><strong>Output:</strong> <code>{1: ["a1", "a2"], 2: ["a3", "a1"], 3: ["a1"]}</code></p>
+            <p>Order of articles per user should match order of appearance in logs.</p>
+          </div>
+          <div class="constraints">Constraints: 1 ≤ len(logs) ≤ 10⁵</div>
+          <div class="approach-section">
+            <div class="approach-label">→ Approach hint</div>
+            <div class="approach-text"><code>defaultdict(list)</code> auto-creates an empty list when a new key is first accessed — no <code>if user not in d</code> needed. Iterate logs, unpack tuple, append directly. <strong>Think:</strong> how would this change if you needed unique articles per user?</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="problem-card" onclick="toggle(this)">
+        <div class="problem-header">
+          <div>
+            <div class="problem-meta"><span class="problem-num">P-11</span><span class="diff-badge medium">Medium</span></div>
+            <div class="problem-title">A trading terminal displays a rolling average of the last K stock prices. As new prices stream in one by one, the window slides forward. Given a stream of prices and window size K, return the list of averages for each window position.</div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="problem-body">
+          <div class="problem-statement">
+            <p><strong>Input:</strong> <code>prices = [100, 110, 105, 120, 95, 130]</code>, <code>k = 3</code></p>
+            <p><strong>Output:</strong> <code>[105.0, 111.67, 106.67, 115.0]</code></p>
+            <p>Return results rounded to 2 decimal places.</p>
+          </div>
+          <div class="constraints">Constraints: 1 ≤ k ≤ len(prices) ≤ 10⁵</div>
+          <div class="approach-section">
+            <div class="approach-label">→ Approach hint</div>
+            <div class="approach-text"><code>deque(maxlen=k)</code> — when you append to a full maxlen deque, it auto-drops the oldest element. Append new price → if <code>len(deque) == k</code>, calculate average. No manual index tracking. <strong>Alternative:</strong> can you solve with just a running sum variable?</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-label">// Interview tip — Collections</div>
+        <div class="tip-text">Use <code>defaultdict</code> when you're always initializing missing keys the same way. Use <code>deque</code> for O(1) on both ends. Use <code>Counter</code> when counting is the core problem. <strong>Don't reach for them when a plain dict works fine</strong> — overusing collections looks like pattern-matching, not understanding.</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- SECTION 5: BUILT-INS -->
+    <div class="section" id="builtins">
+      <div class="section-header">
+        <span class="section-num">05</span>
+        <h2>Python Built-ins</h2>
+      </div>
+
+      <div class="concepts">
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>enumerate():</strong> Index + value together. <code>for i, val in enumerate(arr)</code> — no more <code>range(len(arr))</code>. Optional start: <code>enumerate(arr, start=1)</code>.</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>zip():</strong> Pairs elements from multiple iterables. Stops at shortest. <code>zip(*matrix)</code> transposes a 2D list. <code>dict(zip(keys, values))</code> builds a dict from two lists.</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>map() & filter():</strong> <code>map(func, iterable)</code> applies function to each element. <code>filter(func, iterable)</code> keeps truthy results. Both return iterators — wrap in <code>list()</code>.</div></div>
+        <div class="concept-row"><div class="concept-dot"></div><div class="concept-text"><strong>any() & all():</strong> <code>any()</code> — at least one truthy. <code>all()</code> — all truthy. Both short-circuit. Commonly used with generator expressions for clean one-liners.</div></div>
+      </div>
+
+      <div class="problems-label">// Practice Problems</div>
+
+      <div class="problem-card" onclick="toggle(this)">
+        <div class="problem-header">
+          <div>
+            <div class="problem-meta"><span class="problem-num">P-12</span><span class="diff-badge easy">Easy</span></div>
+            <div class="problem-title">An HR system has two equal-length lists — employee names and their departments. Build a lookup dictionary from these. Then, given a list of names to query, return their departments or "Not Found" if missing.</div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="problem-body">
+          <div class="problem-statement">
+            <p><strong>Input:</strong> <code>names = ["Amit", "Priya", "Ravi"]</code>, <code>depts = ["Engineering", "Design", "Marketing"]</code>, <code>query = ["Priya", "Kiran"]</code></p>
+            <p><strong>Output:</strong> <code>["Design", "Not Found"]</code></p>
+          </div>
+          <div class="constraints">Constraints: len(names) == len(depts) | 1 ≤ len(query) ≤ 10³</div>
+          <div class="approach-section">
+            <div class="approach-label">→ Approach hint</div>
+            <div class="approach-text"><code>zip(names, depts)</code> pairs them — then <code>dict()</code> wraps it. One line. Query with <code>.get(name, "Not Found")</code>. <strong>Challenge:</strong> can you write the entire solution in 2 lines?</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="problem-card" onclick="toggle(this)">
+        <div class="problem-header">
+          <div>
+            <div class="problem-meta"><span class="problem-num">P-13</span><span class="diff-badge medium">Medium</span></div>
+            <div class="problem-title">A QA system checks server health. Given a list of server status dicts (id, cpu, memory, active), determine if ALL active servers are within thresholds (cpu &lt; 80, memory &lt; 75). Return True/False and list any failing server IDs.</div>
+          </div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="problem-body">
+          <div class="problem-statement">
+            <p><strong>Input:</strong> <code>[{"id":"s1","cpu":45,"memory":60,"active":True}, {"id":"s2","cpu":85,"memory":70,"active":True}, {"id":"s3","cpu":90,"memory":80,"active":False}]</code></p>
+            <p><strong>Output:</strong> <code>{"healthy": False, "failing": ["s2"]}</code></p>
+            <p>Inactive servers (active: False) must be ignored completely.</p>
+          </div>
+          <div class="constraints">Constraints: 1 ≤ len(servers) ≤ 10³ | cpu and memory are 0–100</div>
+          <div class="approach-section">
+            <div class="approach-label">→ Approach hint</div>
+            <div class="approach-text">Filter active servers first. Then <code>all(is_healthy(s) for s in active)</code> short-circuits at first failure. Build failing list with a comprehension. <strong>Think:</strong> what's the difference between <code>all()</code> and a manual loop with a flag?</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <div class="tip-label">// Interview tip — Built-ins</div>
+        <div class="tip-text">Using built-ins signals Python fluency. But <strong>don't force them</strong> — a clear for-loop beats a convoluted one-liner with nested <code>map(filter(lambda...))</code>. Rule: if you need to explain what your one-liner does, it's too clever.</div>
+      </div>
+    </div>
+
+    <a href="index.html" class="back-btn">← back to stacknotes</a>
+
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    stacknotes &nbsp;·&nbsp; python — arrays & strings &nbsp;·&nbsp; no solutions, only thinking
+  </div>
+</footer>
+
+<script>
+  function toggle(card) { card.classList.toggle('open'); }
+  document.querySelectorAll('.toc-item').forEach(item => {
+    item.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(item.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+</body>
+</html>
