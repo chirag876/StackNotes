@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>stacknotes</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .index-hero {
+    padding: 5rem 0 4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .index-hero .hero-tag { margin-bottom: 1.2rem; }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 480px;
+    margin-top: 1rem;
+    line-height: 1.7;
+  }
+
+  .notes-section {
+    padding: 3rem 0 6rem;
+  }
+
+  .section-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-title-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .count-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+
+  .notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+
+  .note-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem 1.5rem;
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all 0.15s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .note-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  .note-card:hover {
+    border-color: var(--border2);
+    background: var(--surface2);
+    transform: translateY(-1px);
+  }
+
+  .note-card:hover::before { opacity: 1; }
+
+  .note-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .note-icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    background: var(--tag-bg);
+    border: 1px solid rgba(74,222,128,0.15);
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .note-arrow {
+    color: var(--muted);
+    font-size: 16px;
+    transition: transform 0.15s;
+  }
+
+  .note-card:hover .note-arrow { transform: translate(2px, -2px); }
+
+  .note-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+
+  .note-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .note-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .note-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 2px 7px;
+    border-radius: 3px;
+  }
+
+  .coming-soon {
+    opacity: 0.4;
+    pointer-events: none;
+    cursor: default;
+  }
+
+  .coming-soon::before { display: none; }
+
+  .cs-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+
+  .stat-row {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat { text-align: left; }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+  }
+
+  .stat-divider {
+    width: 1px;
+    height: 36px;
+    background: var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">stack<span>notes</span></a>
+    <span class="badge">personal notes</span>
+  </div>
+</header>
+
+<div class="container">
+  <div class="index-hero">
+    <div class="hero-tag">// chirag's dev learning hub</div>
+    <h1>Everything I'm<br><em>learning.</em></h1>
+    <p class="subtitle">Personal notes on Python, DSA, databases, system design, and more. No fluff — just concepts, patterns, and problems.</p>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-num" id="page-count">1</div>
+      <div class="stat-label">Topics</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <div class="stat-num">13</div>
+      <div class="stat-label">Problems</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Sections</div>
+    </div>
+  </div>
+
+  <div class="notes-section">
+    <div class="section-meta">
+      <span class="section-title-label">// all notes</span>
+      <span class="count-badge" id="live-count">1 live</span>
+    </div>
+
+    <div class="notes-grid">
+
+      <!-- LIVE PAGES -->
+      <a href="arrays-strings.html" class="note-card">
+        <div class="note-top">
+          <span class="note-icon">py</span>
+          <span class="note-arrow">↗</span>
+        </div>
+        <div class="note-title">Python — Arrays & Strings</div>
+        <div class="note-desc">Lists, two pointer, sliding window, prefix sum, Kadane's, strings, dicts, collections, built-ins.</div>
+        <div class="note-footer">
+          <span class="note-tag">13 problems</span>
+          <span class="note-tag">5 sections</span>
+        </div>
+      </a>
+
+      <!-- COMING SOON PLACEHOLDERS -->
+      <div class="note-card coming-soon">
+        <div class="note-top">
+          <span class="note-icon">py</span>
+          <span class="cs-badge">soon</span>
+        </div>
+        <div class="note-title">Python — Linked Lists</div>
+        <div class="note-desc">Reversal, cycle detection, merge, Floyd's algorithm, dummy node pattern.</div>
+        <div class="note-footer">
+          <span class="note-tag">coming soon</span>
+        </div>
+      </div>
+
+      <div class="note-card coming-soon">
+        <div class="note-top">
+          <span class="note-icon">py</span>
+          <span class="cs-badge">soon</span>
+        </div>
+        <div class="note-title">Python — Trees & Graphs</div>
+        <div class="note-desc">BFS, DFS, traversals, height, LCA, BST operations, adjacency list.</div>
+        <div class="note-footer">
+          <span class="note-tag">coming soon</span>
+        </div>
+      </div>
+
+      <div class="note-card coming-soon">
+        <div class="note-top">
+          <span class="note-icon">db</span>
+          <span class="cs-badge">soon</span>
+        </div>
+        <div class="note-title">MongoDB — Core Concepts</div>
+        <div class="note-desc">Aggregation pipeline, indexing, embed vs reference, schema design patterns.</div>
+        <div class="note-footer">
+          <span class="note-tag">coming soon</span>
+        </div>
+      </div>
+
+      <div class="note-card coming-soon">
+        <div class="note-top">
+          <span class="note-icon">db</span>
+          <span class="cs-badge">soon</span>
+        </div>
+        <div class="note-title">SQL — Queries & Optimization</div>
+        <div class="note-desc">Joins, subqueries, window functions, indexes, query planning.</div>
+        <div class="note-footer">
+          <span class="note-tag">coming soon</span>
+        </div>
+      </div>
+
+      <div class="note-card coming-soon">
+        <div class="note-top">
+          <span class="note-icon">api</span>
+          <span class="cs-badge">soon</span>
+        </div>
+        <div class="note-title">FastAPI — Patterns</div>
+        <div class="note-desc">Dependency injection, middleware, Pydantic models, async routes, background tasks.</div>
+        <div class="note-footer">
+          <span class="note-tag">coming soon</span>
+        </div>
+      </div>
+
+      <div class="note-card coming-soon">
+        <div class="note-top">
+          <span class="note-icon">sys</span>
+          <span class="cs-badge">soon</span>
+        </div>
+        <div class="note-title">System Design — Basics</div>
+        <div class="note-desc">JWT flow, rate limiting, OAuth, caching strategies, load balancing.</div>
+        <div class="note-footer">
+          <span class="note-tag">coming soon</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    stacknotes &nbsp;·&nbsp; chirag gupta &nbsp;·&nbsp; updated as i learn
+  </div>
+</footer>
+
+</body>
+</html>
